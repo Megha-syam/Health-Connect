@@ -11,7 +11,8 @@ function SignUp() {
   const [mobileNumber, setMobileNumber] = useState('');
   const [dob, setDob] = useState('');
 
-  const handleSignUp = () => {
+  const handleSignUp = async (e) => {
+      e.preventDefault();
     // Create an object with the user data
     const userData = {
       username,
@@ -20,35 +21,35 @@ function SignUp() {
       mobileNumber,
       dob,
     };
-
-    // Make an HTTP POST request to the server
-    fetch('/api/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    })
-      .then((response) => {
+    
+      // Make an HTTP POST request to the login endpoint
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData),
+        });
+  
         if (response.ok) {
-        // Successful login, handle the response
-           const data = response.json();
+          // Successful login, handle the response
+          const data = await response.json();
+  
           alert(data.message);
-          navigate(`/login`);
-          console.log('User registered successfully');
-
-
+          navigate('/login');
+          console.log(data.message);
+          // Redirect or perform other actions as needed
         } else {
-          console.error('Failed to register user');
+          // Failed login, handle the response
+          const data = await response.json();
+          console.error(data.message);
+          // Display an error message or take other actions
         }
-      });
-
-    // Clear the form fields
-    setUsername('');
-    setEmail('');
-    setPassword('');
-    setMobileNumber('');
-    setDob('');
+      } catch (error) {
+        console.error('Failed to log in:', error);
+      }
+  
   };
 
 
