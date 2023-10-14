@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { Container, Typography, TextField, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   });
+
+  const navigate = useNavigate(); // Move useNavigate here
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -15,12 +18,36 @@ function Login() {
     });
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault(); // Prevent form submission
 
-    // Implement your login logic here
-    // You can access the entered data from formData.username and formData.password
-    console.log('Logged in with:', formData.username, formData.password);
+    // Make an HTTP POST request to the login endpoint
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        // Successful login, handle the response
+        const data = await response.json();
+
+        alert(data.message);
+        navigate(`/AppointmentPage`);
+        console.log(data.message);
+        // Redirect or perform other actions as needed
+      } else {
+        // Failed login, handle the response
+        const data = await response.json();
+        console.error(data.message);
+        // Display an error message or take other actions
+      }
+    } catch (error) {
+      console.error('Failed to log in:', error);
+    }
   };
 
   return (

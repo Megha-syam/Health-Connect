@@ -13,7 +13,7 @@ const LandingPage = () => {
           <nav className="navbar navbar-expand-lg py-0">
             <div className="container">
             
-                <img src="" alt="Logo" />  
+                <img src="logo.png" alt="Logo" />  
           
           <button
             className="navbar-toggler d-none"

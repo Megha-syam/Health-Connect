@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Typography, Container, TextField, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
   const [username, setUsername] = useState('');
@@ -10,9 +11,43 @@ function SignUp() {
   const [dob, setDob] = useState('');
 
   const handleSignUp = () => {
-    // Add user sign-up logic here
-    console.log('Signed up with:', username, email, password, confirmPassword, mobileNumber, dob);
+    // Create an object with the user data
+    const userData = {
+      username,
+      email,
+      password,
+      mobileNumber,
+      dob,
+    };
+
+    // Make an HTTP POST request to the server
+    fetch('/api/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert(data.message);
+          navigate(`/login`);
+          console.log('User registered successfully');
+
+
+        } else {
+          console.error('Failed to register user');
+        }
+      });
+
+    // Clear the form fields
+    setUsername('');
+    setEmail('');
+    setPassword('');
+    setMobileNumber('');
+    setDob('');
   };
+
 
   return (
     <Container>
