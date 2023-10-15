@@ -53,9 +53,9 @@ app.post('/api/signup', async (req, res) => {
   }
   else{
     const userData = req.body;
-    const user = new User(userData);
+    const User1 = new User(userData);
     try {
-      const savedUser = await user.save();
+      const savedUser = await User1.save();
       console.log('User data saved:', savedUser);
       res.status(200).json({ message: 'Registered successful','user' : user });
     } catch (err) {

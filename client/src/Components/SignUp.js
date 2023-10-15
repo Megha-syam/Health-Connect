@@ -26,7 +26,7 @@ function SignUp() {
     
       // Make an HTTP POST request to the login endpoint
       try {
-        const response = await fetch('/api/login', {
+        const response = await fetch('/api/signup', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
