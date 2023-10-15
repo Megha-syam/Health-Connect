@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { Typography, Container, TextField, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
+
 function SignUp() {
   const navigate = useNavigate(); // Move useNavigate here
+  
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -31,11 +33,12 @@ function SignUp() {
           },
           body: JSON.stringify(userData),
         });
-  
         if (response.ok) {
           // Successful login, handle the response
           const data = await response.json();
-  
+          if(data.message === 'Already logged in successful'){
+            navigate('/user');
+          }
           alert(data.message);
           navigate('/login');
           console.log(data.message);

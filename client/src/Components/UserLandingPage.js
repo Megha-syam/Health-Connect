@@ -5,37 +5,53 @@ import { Typography, Container, TextField, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 
+const UserLandingPage = () => {
 
-const LandingPage = () => {
-  const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    // Make an API request to check the user's session
-    fetch('/api/user')
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        } else {
-          throw new Error('Not authenticated');
-        }
+    const navigate = useNavigate();
+    const [user, setUser] = useState(null);
+  
+    
+    const handleLogout = () => {
+        // Make an API request to log the user out on the server
+    fetch('/api/logout', {
+        method: 'GET', // You can use 'GET' or 'POST' based on your server implementation
       })
-      .then((data) => {
-        setUser(data.user);
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
-  }, []);
+        .then((response) => {
+          if (response.status === 200) {
+            
+            navigate('/'); // Redirect to the landing page
+          } else {
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          // Handle network errors or other issues here
+        });
+      };
 
-  useEffect(() => {
-    if (user) {
-      navigate('/user');
-    }
-  }, [user, navigate]);
-
-
-
+    useEffect(() => {
+      // Make an API request to check the user's session
+      fetch('/api/user')
+        .then((response) => {
+          if (response.status === 200) {
+            return response.json();
+          } else {
+            throw new Error('Not authenticated');
+          }
+        })
+        .then((data) => {
+          setUser(data.user);
+        })
+        .catch((error) => {
+          console.error(error.message);
+        });
+    }, []);
+  
+    useEffect(() => {
+      if (user) {
+        navigate('/user');
+      }
+    }, [user, navigate]);
 
  return(
 <>
@@ -47,148 +63,8 @@ const LandingPage = () => {
             
                 <img src="logo.png" alt="Logo" />  
           
-          <button
-            className="navbar-toggler d-none"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <i className="ti ti-menu-2 fs-9" />
-          </button>
-          <button
-            className="navbar-toggler border-0 p-0 shadow-none"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasNavbar"
-            aria-controls="offcanvasNavbar"
-          >
-            
-            <i className="ti ti-menu-2 fs-9" />
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav align-items-center mb- mb-lg-0 ms-auto">
-              <li className="nav-item dropdown hover-dd mega-dropdown pages-dropdown">
-                <a
-                  className="nav-link dropdown-toggle"
-                 
-                  role="button"
-                  aria-expanded="false"
-                >
-                  
-                
-                  Find Doctors
-                </a>
-              </li>
-              <li className="nav-item dropdown hover-dd mega-dropdown pages-dropdown">
-                <a
-                  className="nav-link dropdown-toggle"
-                  
-                  role="button"
-                  aria-expanded="false"
-                >
-               
-                  Lab Tests
-                </a>
-              </li>
-              <li className="nav-item dropdown hover-dd mega-dropdown pages-dropdown">
-                <a
-                  className="nav-link dropdown-toggle"
-                
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  For Providers
-
-                </a>
-                <div className="dropdown-menu dropdown-menu-animate-up py-0">
-                  <div className="p-4">
-                    <a
-                      target="_blank"
-                      href="/doctorlogin"
-                      className="d-flex align-items-center pb-7 position-relative lh-base"
-                    >
-                      <div className="bg-light rounded me-3 p-6 d-flex align-items-center justify-content-center">
-                        <img
-                          src=""
-                          alt=""
-                          className="img-fluid"
-                          width={24}
-                          height={24}
-                        />
-                      </div>
-                      <div className="d-inline-block">
-                        <h6 className="mb-1 fw-semibold text-hover-primary">
-                          For Doctors
-                        </h6>
-                        <span className="fs-2 d-block fw-normal text-muted" />
-                      </div>
-                    </a>
-                    <a
-                      target="_blank"
-                    
-                      className="d-flex align-items-center pb-7 position-relative lh-base"
-                    >
-                      <div className="bg-light rounded me-3 p-6 d-flex align-items-center justify-content-center">
-                        <img
-                          
-                          alt=""
-                          className="img-fluid"
-                          width={24}
-                          height={24}
-                        />
-                      </div>
-                      <div className="d-inline-block">
-                        <h6 className="mb-1 fw-semibold text-hover-primary">
-                          For Hospitals
-                        </h6>
-                        <span className="fs-2 d-block fw-normal text-muted" />
-                      </div>
-                    </a>
-                  </div>
-                </div>
-              </li>
-              <li className="nav-item dropdown hover-dd mega-dropdown pages-dropdown">
-                <a
-                  xxx
-                  href="/Components/Payments"
-                  className="btn btn-primary fs-3 rounded btn-hover-shadow px-3 py-2"
-            
-                >
-                 <Button color="inherit" component={Link} to="/PaymentsPage">Payments</Button>
-                  
-                </a>
-              </li>
-              <li className="nav-item ms-2">
-                <a
-                   
-                  className="btn btn-primary fs-3 rounded btn-hover-shadow px-3 py-2"
-                  
-                
-                >
-                  <Button color="inherit" component={Link} to="/login">Login</Button>
-                  
-                  
-                </a>
-              </li>
-              <li className="nav-item ms-2">
-                <a
-                   
-                   
-                 href="/Components/SignUp"
-                  className="btn btn-primary fs-3 rounded btn-hover-shadow px-3 py-2"
-            
-                >
-                 <Button color="inherit" component={Link} to="/SignUp">Register</Button>
-                  
-                </a>
-              </li>
-            </ul>
+                <Button onClick={handleLogout} > Logout</Button>
           </div>
-        </div>
       </nav>
     </header>
   
@@ -1690,12 +1566,7 @@ const LandingPage = () => {
                 Nurturing Your Vitality.
               </h2>
               <div className="d-sm-flex align-items-center justify-content-center justify-content-lg-start gap-3">
-                <a
-                 
-                  className="btn bg-white text-primary fw-semibold d-block mb-3 mb-sm-0 btn-hover-shadow"
-                >
-                  Login
-                </a>
+               
                 <a
                  
                   className="btn border-white text-white fw-semibold btn-hover-white d-block"
@@ -1844,22 +1715,7 @@ const LandingPage = () => {
           </li>
 
         </ul>
-        <form className="d-flex mt-3" role="search">
-          <a
-           
-            className="btn btn-primary w-100 py-2"
-          >
-            Login
-          </a>
-        </form>
-        <form className="d-flex mt-3" role="search">
-          <a
-           
-            className="btn btn-primary w-100 py-2"
-          >
-            Sign Up
-          </a>
-        </form>
+    
       </div>
       // Function to show error alert with auto-close feature
     </div>
@@ -1869,4 +1725,4 @@ const LandingPage = () => {
  )
 };
 
-export default LandingPage;
+export default UserLandingPage;

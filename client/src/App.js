@@ -5,6 +5,7 @@ import LandingPage from "./Components/landingPage";
 import Login from './Components/Login'; 
 import SignUp from './Components/SignUp';
 import AppointmentPage from './Components/AppointmentPage';
+import UserLandingPage from './Components/UserLandingPage';
 import PaymentsPage from './Components/PaymentsPage';
 import FeedbackForm from './Components/FeedbackForm';
 import ViewDoctorsPage from './Components/ViewDoctorsPage';
@@ -15,6 +16,7 @@ function App() {
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<LandingPage/>}></Route>
+      <Route path="/user" element={<UserLandingPage/>}></Route>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/AppointmentPage" element={<AppointmentPage />} />

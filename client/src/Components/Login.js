@@ -34,10 +34,10 @@ function Login() {
       if (response.ok) {
         // Successful login, handle the response
         const data = await response.json();
-
-        alert(data.message);
-        navigate(`/AppointmentPage`);
-        console.log(data.message);
+        
+        alert("succesfully completed");
+        navigate(`/user`);
+        console.log("succesfully completed");
         // Redirect or perform other actions as needed
       } else {
         // Failed login, handle the response
