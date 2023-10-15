@@ -57,7 +57,7 @@ app.post('/api/signup', async (req, res) => {
     try {
       const savedUser = await User1.save();
       console.log('User data saved:', savedUser);
-      res.status(200).json({ message: 'Registered successful','user' : user });
+      res.status(200).json({ message: 'Registered successful','user' : SavedUser });
     } catch (err) {
       console.error('Error saving user data:', err);
       res.status(500).send('Internal Server Error');
