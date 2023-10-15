@@ -38,7 +38,8 @@ const User = mongoose.model('User', userSchema);
 
 app.get('/api/user', (req, res) => {
   if (req.session.user) {
-    res.json({ user: req.session.user });
+    console.log(req.session.user)
+    res.json({status:200, data : req.session.user});
   } else {
     res.status(401).json({ message: 'Not authenticated' });
   }
