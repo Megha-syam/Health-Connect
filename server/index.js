@@ -49,7 +49,7 @@ app.get('/api/user', (req, res) => {
 // Define a route to handle form submissions
 app.post('/api/signup', async (req, res) => {
   if(req.session.user){
-    res.json({ message: 'Already logged in successful','user':req.session.user });//how to navigate it to user dashboard
+    res.json({ message: 'Already logged in successful','user':req.session.user });
   }
   else{
     const userData = req.body;
@@ -57,7 +57,7 @@ app.post('/api/signup', async (req, res) => {
     try {
       const savedUser = await User1.save();
       console.log('User data saved:', savedUser);
-      res.status(200).json({ message: 'Registered successful','user' : SavedUser });
+      res.status(200).json({ message: 'Registered successful','user' : savedUser });
     } catch (err) {
       console.error('Error saving user data:', err);
       res.status(500).send('Internal Server Error');

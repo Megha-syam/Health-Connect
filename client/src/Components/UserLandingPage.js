@@ -5,23 +5,23 @@ import { Typography, Container, TextField, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 
-const UserLandingPage = ({data}) => {
+const UserLandingPage = () => {
 
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState();
   
     useEffect(() => {
         fetch('/api/user')
           .then((response) => {
             if (response.status === 200) {
-            console.log(data);
+               console.log(response.data);
 ;             return response.json();
             }
             else{
                 navigate('/');
             }
           })
-          .then((data) => setUser(data.data))
+          .then(() => setUser(response.data))
           .catch((error) => console.error('Error fetching user data:', error));
       }, []);
      
