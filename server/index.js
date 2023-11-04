@@ -19,7 +19,17 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
+const nodemailer = require('nodemailer');
 
+const transporter = nodemailer.createTransport({
+  service:'gmail',
+  host: 'smtp.gmail.com',
+  port: 587,
+  auth: {
+      user: 'praneeth_mcr@srkrec.edu.in',
+      pass: 'uzfv zovb bcpb agax'
+  }
+});
 
 // Middleware to parse JSON data from requests
 app.use(bodyParser.json());
@@ -32,9 +42,30 @@ const userSchema = new mongoose.Schema({
   mobileNumber: String,
   dob: String,
 });
+const appointmentSchema = new mongoose.Schema({
+ doctorname: String,
+ patient : String,
+ patientname: String,
+ mobile: String,
+ problem : String,
+ scheduleTime : String
 
+
+});
+
+
+
+const DoctorSchema = new mongoose.Schema({
+  doctorid: String,
+  password:String,
+  doctorName:String,
+  Speciality:String,
+  Address:String
+});
+
+const Appointment = mongoose.model('Appointment', appointmentSchema);
 const User = mongoose.model('User', userSchema);
-
+const Doctor = mongoose.model('Doctor',DoctorSchema)
 
 app.get('/api/user', (req, res) => {
   if (req.session.user) {
@@ -109,6 +140,62 @@ app.post('/api/login', async (req, res) => {
     }
   }
 });
+
+
+app.get('/api/doctors', async (req, res) => {
+  try {
+    const doctor = await Doctor.find({},{'_id':1,'doctorName': 1});
+    console.log(doctor);
+    res.json(doctor);
+    
+  } catch (err) {
+    res.status(500).send({message: 'Error fetching slots'});
+  }
+});
+
+
+app.post('/api/appointments', async (req, res) => {
+  console.log(req.body);
+  const DoctorName = req.body.selectedDoctor;
+  const patientName = req.body.patientName;
+  const mobile = req.body.mobileNumber;
+  const problem = req.body.problem;
+  const scheduletime = req.body.scheduledTime;
+  try {
+    const appointment = await Appointment.create({
+      DoctorName,
+      patient: req.session.user._id, 
+      patientName,
+      mobile,
+      problem,
+      scheduletime
+    });
+    transporter.sendMail({
+      from: 'praneeth_mcr@srkrec.edu.in',
+      to: 'saipraneethkambhampati800@gmail.com',
+      subject: 'Appointment Confirmation',
+      text: `Your appointment with Dr. ${req.body.selectedDoctor} has been booked for today at ${req.body.scheduledTime}.`
+    });
+  
+    
+    res.status(201).json(appointment);
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({message: 'Error booking appointment'}); 
+  }
+});
+
+
+app.get('/api/appointments', async (req, res) => {
+  try {
+    const appointments = await Appointment.find({patient: req.session.user._id})
+    res.json(appointments);
+  } catch (err) {
+    res.status(500).json({message: 'Error getting appointments'});
+  }
+});
+
+
 // End of Teams Route Handling Functions
 
 app.listen(5000, function () {
