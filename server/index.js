@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 
-mongoose.connect('mongodb+srv://saipraneethkambhampati800:PFTyvSKltwa4wBFB@cluster0.w2azzd2.mongodb.net/hospital_management')
+mongoose.connect('MONGO_DB_URL')
 .then(()=>{
     console.log("mongodb conncted")
 })
